@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace PriendWeb.Data.Entity
@@ -103,6 +105,24 @@ namespace PriendWeb.Data.Entity
             else
             {
                 return false;
+            }
+        }
+
+        public static string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashed = sha256.ComputeHash(Encoding.UTF8.GetBytes(password + "rice-burger"));
+
+                const string HexDigits = "0123456789ABCDEF";
+                StringBuilder resultBuilder = new StringBuilder();
+                foreach (byte bt in hashed)
+                {
+                    resultBuilder.Append(HexDigits[bt >> 4]);
+                    resultBuilder.Append(HexDigits[bt & 0xF]);
+                }
+
+                return resultBuilder.ToString();
             }
         }
     }
