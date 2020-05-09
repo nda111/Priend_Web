@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 
 namespace PriendWeb.Data.Entity
@@ -30,6 +31,19 @@ namespace PriendWeb.Data.Entity
         /// Get the name of group
         /// </summary>
         public string Name { get; private set; } = null;
+
+        /// <summary>
+        /// Create instance with data
+        /// </summary>
+        /// <param name="id">ID of group</param>
+        /// <param name="ownerId">ID of the owner of the group</param>
+        /// <param name="name">Name of the group</param>
+        public Group(int id, long ownerId, string name)
+        {
+            Id = id;
+            OwnerId = ownerId;
+            Name = name;
+        }
 
         public JObject ToJson()
         {

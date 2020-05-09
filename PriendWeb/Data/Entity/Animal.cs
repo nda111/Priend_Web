@@ -50,6 +50,25 @@ namespace PriendWeb.Data.Entity
         /// </summary>
         public SortedDictionary<long, double> Weights { get; private set; } = null;
 
+        /// <summary>
+        /// Create instance with data
+        /// </summary>
+        /// <param name="id">ID of the animal</param>
+        /// <param name="species">Species ID of the animal</param>
+        /// <param name="birthday">Birthday of the animal</param>
+        /// <param name="name">Name of the animal</param>
+        /// <param name="sex">Sex of the animal</param>
+        /// <param name="weights">Dictionary of weight of the animal</param>
+        public Animal(int id, int species, int birthday, string name, Sex sex, SortedDictionary<long, double> weights)
+        {
+            Id = id;
+            Species = species;
+            Birthday = birthday;
+            Name = name;
+            Sex = sex;
+            Weights = weights;
+        }
+
         public JObject ToJson()
         {
             JArray weightArray = new JArray();
