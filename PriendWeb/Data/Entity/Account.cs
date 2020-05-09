@@ -44,6 +44,24 @@ namespace PriendWeb.Data.Entity
         /// </summary>
         public Settings Settings { get; private set; } = default;
 
+        /// <summary>
+        /// Create instance with data
+        /// </summary>
+        /// <param name="id">Id of the account</param>
+        /// <param name="name">Name of the owner of the account</param>
+        /// <param name="email">Email addresss of the account</param>
+        /// <param name="authToken">Authentication token of the account</param>
+        /// <param name="settings">Setting informations of the account</param>
+        public Account(long id, string name, string email, string authToken, Settings settings)
+        {
+            Id = id;
+            Name = name;
+            Email = email;
+            AuthenticationToken = authToken;
+            Settings = settings;
+
+        }
+
         public JObject ToJson()
         {
             JObject json = new JObject();

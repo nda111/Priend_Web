@@ -37,6 +37,21 @@ namespace PriendWeb.Data
         /// 
         public bool DoCommentAlert { get; set; }
 
+        /// <summary>
+        /// Create instance with data
+        /// </summary>
+        /// <param name="weightAlert">Do weight alert</param>
+        /// <param name="birthdayAlert">Do birthday alert</param>
+        /// <param name="eventAlert">Do event alert</param>
+        /// <param name="commentAlert">do comment alert</param>
+        public Settings(bool weightAlert, bool birthdayAlert, bool eventAlert, bool commentAlert)
+        {
+            DoWeightAlert = weightAlert;
+            DoBirthdayAlert = birthdayAlert;
+            DoEventAlert = eventAlert;
+            DoCommentAlert = commentAlert;
+        }
+
         public JObject ToJson()
         {
             JObject json = new JObject();
