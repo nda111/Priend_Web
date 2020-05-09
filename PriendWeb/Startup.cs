@@ -10,16 +10,25 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PriendWeb.Interaction;
+using Npgsql;
 
 namespace PriendWeb
 {
     public class Startup
     {
         private Dictionary<string, IResponse> WebSocketRoutingTable { get; } = null;
+        private NpgsqlConnection SqlConnection { get; } = null;
+        internal static string MailApiKey = null;
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            if (MailApiKey == null)
+            {
+                MailApiKey = configuration.GetValue<string>("MailApiKey");
+            }
+            SqlConnection = new NpgsqlConnection(configuration.GetValue<string>("ConnectionString"));
+            SqlConnection.Open();
 
             IResponse[] responses =
             {
@@ -29,12 +38,15 @@ namespace PriendWeb
             WebSocketRoutingTable = new Dictionary<string, IResponse>();
             foreach (var response in responses)
             {
-                // Check path duplication
-                if (!WebSocketRoutingTable.TryAdd(response.Path, response))
-                {
-                    var responseType = WebSocketRoutingTable[response.Path].GetType();
-                    throw new ArgumentException($"'{response.Path}'는 '{responseType.Name}'에 할당된 경로입니다.");
-                }
+                WebSocketRoutingTable.Add(response.Path, response);
+            }
+        }
+
+        ~Startup()
+        {
+            if (SqlConnection != null)
+            {
+                SqlConnection.Close();
             }
         }
 
@@ -46,7 +58,7 @@ namespace PriendWeb
             services.AddRazorPages();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtime. Use this Wmethod to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -75,7 +87,7 @@ namespace PriendWeb
 
                         while (!conn.WebSocket.CloseStatus.HasValue)
                         {
-                            await response.Response(context, conn);
+                            await response.Response(context, conn, SqlConnection);
                             await conn.ReceiveAsync();
                         }
                     }
