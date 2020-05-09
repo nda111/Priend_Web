@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Npgsql;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace PriendWeb.Interaction
     {
         string IResponse.Path => "/ws/echo";
 
-        async Task IResponse.Response(HttpContext context, WebSocketConnection conn)
+        async Task IResponse.Response(HttpContext context, WebSocketConnection conn, NpgsqlConnection npgConn)
         {
             var result = await conn.ReceiveAsync();
 

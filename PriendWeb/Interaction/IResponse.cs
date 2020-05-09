@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Npgsql;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace PriendWeb.Interaction
         /// </summary>
         /// <param name="context">요청의 context</param>
         /// <param name="conn">웹소켓 연결의 인터페이스 객체</param>
-        Task Response(HttpContext context, WebSocketConnection conn);
+        /// <param name="npgConn">데이터베이스 연결의 인터페이스 객체</param>
+        Task Response(HttpContext context, WebSocketConnection conn, NpgsqlConnection npgConn);
     }
 }
