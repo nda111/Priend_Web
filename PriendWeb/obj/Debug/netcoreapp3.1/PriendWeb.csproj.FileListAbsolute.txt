@@ -35,4 +35,3 @@ C:\Users\nda11\source\Git\Priend\Priend_Web\PriendWeb\obj\Debug\netcoreapp3.1\Pr
 C:\Users\nda11\source\Git\Priend\Priend_Web\PriendWeb\obj\Debug\netcoreapp3.1\PriendWeb.csproj.CopyComplete
 C:\Users\nda11\source\Git\Priend\Priend_Web\PriendWeb\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 C:\Users\nda11\source\Git\Priend\Priend_Web\PriendWeb\bin\Debug\netcoreapp3.1\Npgsql.dll
-C:\Users\nda11\source\Git\Priend\Priend_Web\PriendWeb\bin\Debug\netcoreapp3.1\SendGrid.dll
