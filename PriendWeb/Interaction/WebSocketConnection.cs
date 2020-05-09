@@ -137,6 +137,17 @@ namespace PriendWeb.Interaction
         }
 
         /// <summary>
+        /// 1바이트 부호 없는 정수를 전송한다.
+        /// </summary>
+        /// <param name="data">1바이트 부호 없는 정수</param>
+        /// <param name="cancellationToken">작업 취소를 지시하는 토큰</param>
+        /// <returns></returns>
+        public async Task SendByteAsync(byte data, CancellationToken cancellationToken = default)
+        {
+            await WebSocket.SendAsync(new ArraySegment<byte>(new byte[] { data }), WebSocketMessageType.Binary, true, cancellationToken);
+        }
+
+        /// <summary>
         /// 2바이트 부호 있는 정수를 전송한다.
         /// </summary>
         /// <param name="s">2바이트 부호 있는 정수</param>
