@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -126,15 +128,67 @@ namespace PriendWeb.Data.Entity
             }
         }
 
-        public static string HashPassword(string password)
+        /// <summary>
+        /// A class that contains SHA-256 hashing methods
+        /// </summary>
+        internal static class Hash
         {
-            using (SHA256 sha256 = SHA256.Create())
+            /// <summary>
+            /// Hash password
+            /// </summary>
+            /// <param name="password">Password string to hash</param>
+            /// <returns>Hashed password string</returns>
+            public static string Password(string password)
             {
-                byte[] hashed = sha256.ComputeHash(Encoding.UTF8.GetBytes(password + "rice-burger"));
+                return ToHexString(HashString(password + "rice-burger"));
+            }
 
+            /// <summary>
+            /// Hash verification key
+            /// </summary>
+            /// <param name="email">Email of an account to verify</param>
+            /// <returns>Hashed verification key</returns>
+            public static string VerificationKey(string email)
+            {
+                return ToHexString(HashString(email + "waffle"));
+            }
+
+            /// <summary>
+            /// Hash reset password key
+            /// </summary>
+            /// <param name="email">Email of an account to reset password</param>
+            /// <param name="due">The expiration date of key</param>
+            /// <returns>Hashed reset password key</returns>
+            public static string ResetPasswordKey(string email, DateTime due)
+            {
+                return ToHexString(HashString(email + due.Ticks.ToString() + "pizza"));
+            }
+
+            /// <summary>
+            /// Hash authentication token
+            /// </summary>
+            /// <param name="email">Email of an account to authenticate</param>
+            /// <param name="password">Password of an account to authenticate</param>
+            /// <returns>Hashed authentication key</returns>
+            public static string AuthenticationToken(string email, string password)
+            {
+                return ToHexString(HashString(email + password + DateTime.Now.Ticks + "hashbrown"));
+            }
+
+            private static byte[] HashString(string input)
+            {
+                using (SHA256 sha256 = SHA256.Create())
+                {
+                    return sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
+                }
+            }
+
+            private static string ToHexString(byte[] buffer)
+            {
                 const string HexDigits = "0123456789ABCDEF";
+
                 StringBuilder resultBuilder = new StringBuilder();
-                foreach (byte bt in hashed)
+                foreach (byte bt in buffer)
                 {
                     resultBuilder.Append(HexDigits[bt >> 4]);
                     resultBuilder.Append(HexDigits[bt & 0xF]);
