@@ -60,7 +60,7 @@ namespace PriendWeb.Data.Entity
         {
             int? id = null;
             long? owner = null;
-            string? name = null;
+            string name = null;
 
             JToken token;
 
@@ -77,7 +77,7 @@ namespace PriendWeb.Data.Entity
                 name = token.ToObject<string>();
             }
 
-            if (new object?[] { id, owner, name }.All(o => o != null))
+            if (new object[] { id, owner, name }.All(o => o != null))
             {
                 Id = id.Value;
                 OwnerId = owner.Value;
