@@ -17,7 +17,7 @@ namespace PriendWeb
     public class Startup
     {
         private Dictionary<string, IResponse> WebSocketRoutingTable { get; } = null;
-        private NpgsqlConnection SqlConnection { get; } = null;
+        private NpgsqlConnectionManager NpgConnections { get; } = null;
         internal static string MailApiKey = null;
 
         public Startup(IConfiguration configuration)
@@ -27,8 +27,7 @@ namespace PriendWeb
             {
                 MailApiKey = configuration.GetValue<string>("MailApiKey");
             }
-            SqlConnection = new NpgsqlConnection(configuration.GetValue<string>("ConnectionString"));
-            SqlConnection.Open();
+            NpgConnections = new NpgsqlConnectionManager(configuration.GetValue<string>("ConnectionString"), 5);
 
             IResponse[] responses =
             {
@@ -44,10 +43,7 @@ namespace PriendWeb
 
         ~Startup()
         {
-            if (SqlConnection != null)
-            {
-                SqlConnection.Close();
-            }
+            NpgConnections.Dispose();
         }
 
         public IConfiguration Configuration { get; }
@@ -87,8 +83,12 @@ namespace PriendWeb
 
                         while (!conn.WebSocket.CloseStatus.HasValue)
                         {
-                            await response.Response(context, conn, SqlConnection);
+                            var sqlConnection = NpgConnections.WaitForConnection();
+
+                            await response.Response(context, conn, sqlConnection);
                             await conn.ReceiveAsync();
+
+                            NpgConnections.TryReturnConnection(sqlConnection);
                         }
                     }
                     else
