@@ -19,9 +19,9 @@ namespace PriendWeb.Interaction.Membership.Web
             ServerError = 4,
         }
 
-        public string Path => "/ws/membership/web/reset";
+        string IResponse.Path => "/ws/membership/web/reset";
 
-        public async Task Response(HttpContext context, WebSocketConnection conn, NpgsqlConnection npgConn)
+        async Task IResponse.Response(HttpContext context, WebSocketConnection conn, NpgsqlConnection npgConn)
         {
             await conn.ReceiveAsync();
             string hash = conn.TextMessage;

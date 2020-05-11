@@ -16,9 +16,9 @@ namespace PriendWeb.Interaction.Membership
             ServerError = 1,
         }
 
-        public string Path => "/ws/membership/reset";
+        string IResponse.Path => "/ws/membership/reset";
 
-        public async Task Response(HttpContext context, WebSocketConnection conn, NpgsqlConnection npgConn)
+        async Task IResponse.Response(HttpContext context, WebSocketConnection conn, NpgsqlConnection npgConn)
         {
             await conn.ReceiveAsync();
             string email = conn.TextMessage;

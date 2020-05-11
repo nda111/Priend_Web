@@ -16,9 +16,9 @@ namespace PriendWeb.Interaction.Membership.Web
             ServerError = 2,
         }
 
-        public string Path => "/ws/membership/web/verify";
+        string IResponse.Path => "/ws/membership/web/verify";
 
-        public async Task Response(HttpContext context, WebSocketConnection conn, NpgsqlConnection npgConn)
+        async Task IResponse.Response(HttpContext context, WebSocketConnection conn, NpgsqlConnection npgConn)
         {
             await conn.ReceiveAsync();
             string hash = conn.TextMessage;

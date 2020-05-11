@@ -21,9 +21,9 @@ namespace PriendWeb.Interaction.Membership
             ServerError = 3,
         }
 
-        public string Path => "/ws/membership/login";
+        string IResponse.Path => "/ws/membership/login";
 
-        public async Task Response(HttpContext context, WebSocketConnection conn, NpgsqlConnection npgConn)
+        async Task IResponse.Response(HttpContext context, WebSocketConnection conn, NpgsqlConnection npgConn)
         {
             await conn.ReceiveAsync();
             string email = conn.TextMessage;
