@@ -41,6 +41,7 @@ namespace PriendWeb
                 new ResetPasswordResponse(),
                 new VerificationResponse(),
                 new ResetPasswordWebResponse(),
+                new ResetPasswordConfirmResponse(),
             };
 
             WebSocketRoutingTable = new Dictionary<string, IResponse>();
