@@ -36,7 +36,7 @@ namespace PriendWeb.Interaction.Membership
             {
                 using (var cmd = npgConn.CreateCommand())
                 {
-                    cmd.CommandText = $"SELECT (pw, id, name, weights_alert, birth_alert, event_alert, com_comment) FROM account WHERE email='{email}';";
+                    cmd.CommandText = $"SELECT pw, id, name, weights_alert, birth_alert, event_alert, com_comment FROM account WHERE email='{email}';";
 
                     Account account = null;
 
@@ -45,7 +45,7 @@ namespace PriendWeb.Interaction.Membership
                         if (reader.HasRows)
                         {
                             reader.Read();
-                            string readPassword = reader.GetString(2);
+                            string readPassword = reader.GetString(0);
 
                             if (hashedPassword == readPassword)
                             {

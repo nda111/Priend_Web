@@ -30,7 +30,7 @@ namespace PriendWeb.Interaction.Membership.Web
                     string email = null;
                     string name = null;
 
-                    cmd.CommandText = $"SELECT (email) FROM verifying_hash WHERE hash='{hash}';";
+                    cmd.CommandText = $"SELECT email FROM verifying_hash WHERE hash='{hash}';";
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows)
@@ -46,7 +46,7 @@ namespace PriendWeb.Interaction.Membership.Web
                     }
                     else
                     {
-                        cmd.CommandText = $"SELECT (name) FROM account WHERE email='{email}';";
+                        cmd.CommandText = $"SELECT name FROM account WHERE email='{email}';";
                         using (var reader = cmd.ExecuteReader())
                         {
                             reader.Read();

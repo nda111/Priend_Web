@@ -32,7 +32,7 @@ namespace PriendWeb.Interaction.Membership
                 {
                     string name = null;
 
-                    cmd.CommandText = $"SELECT (name) FROM account WHERE email='{email}';";
+                    cmd.CommandText = $"SELECT name FROM account WHERE email='{email}';";
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows)

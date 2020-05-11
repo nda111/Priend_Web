@@ -39,7 +39,7 @@ namespace PriendWeb.Interaction.Membership.Web
                     long expireDue = -1;
                     bool bUsed = false;
 
-                    cmd.CommandText = $"SELECT (email, expire_due, used) FROM reset_password WHERE hash='{hash}';";
+                    cmd.CommandText = $"SELECT email, expire_due, used FROM reset_password WHERE hash='{hash}';";
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows)

@@ -25,7 +25,7 @@ namespace PriendWeb.Interaction.Membership
             {
                 using (var cmd = npgConn.CreateCommand())
                 {
-                    cmd.CommandText = $"SELECT (verified) FROM account WHERE email='{email}';";
+                    cmd.CommandText = $"SELECT verified FROM account WHERE email='{email}';";
 
                     using (var reader = cmd.ExecuteReader())
                     {
