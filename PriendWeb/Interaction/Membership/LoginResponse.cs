@@ -44,6 +44,7 @@ namespace PriendWeb.Interaction.Membership
                     {
                         if (reader.HasRows)
                         {
+                            reader.Read();
                             string readPassword = reader.GetString(2);
 
                             if (hashedPassword == readPassword)

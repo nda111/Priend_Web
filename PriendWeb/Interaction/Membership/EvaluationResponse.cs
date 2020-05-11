@@ -31,6 +31,7 @@ namespace PriendWeb.Interaction.Membership
                     {
                         if (reader.HasRows)
                         {
+                            reader.Read();
                             bool bVerified = reader.GetBoolean(0);
 
                             if (bVerified)

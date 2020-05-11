@@ -53,7 +53,9 @@ namespace PriendWeb.Interaction.Membership.Web
                             name = reader.GetString(0);
                         }
 
-                        cmd.CommandText = $"DELETE FROM verifying_hash WHERE email='{email}';";
+                        cmd.CommandText = 
+                            $"DELETE FROM verifying_hash WHERE email='{email}';" +
+                            $"UPDATE account SET verified=TRUE WHERE email='{email}';";
                         cmd.ExecuteNonQuery();
 
                         await conn.SendByteAsync((byte)EResponse.Ok);
