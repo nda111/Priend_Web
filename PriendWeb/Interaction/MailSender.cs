@@ -13,11 +13,6 @@ namespace PriendWeb.Interaction
     {
         public static EmailAddress From { get; } = new EmailAddress("priendapp@gmail.com", "Priend");
 
-        static MailSender()
-        {
-            throw new NotImplementedException();
-        }
-
         public static async Task<Response> SendVerificationMailAsync(string apiKey, string to, string name, string hash)
         {
             var client = new SendGridClient(apiKey);
