@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace PriendWeb.Interaction
 {
@@ -26,17 +27,41 @@ namespace PriendWeb.Interaction
         /// </summary>
         /// <param name="connectionString">The connection string of the database connection</param>
         /// <param name="connectionCount">The number of connections</param>
-        public NpgsqlConnectionManager(string connectionString, int connectionCount)
+        /// <param name="concurrent">Indicate weather establish each connections in each threads</param>
+        public NpgsqlConnectionManager(string connectionString, int connectionCount, bool concurrent)
         {
             lock (locker)
             {
-                while (connectionCount-- > 0)
+                if (concurrent)
                 {
-                    NpgsqlConnection conn = new NpgsqlConnection(connectionString);
-                    conn.Open();
+                    NpgsqlConnection[] connections = new NpgsqlConnection[connectionCount];
 
-                    hashCodes.Add(conn.GetHashCode());
-                    connectionQueue.AddLast(conn);
+                    var result = Parallel.For(0, connectionCount, i =>
+                    {
+                        NpgsqlConnection conn = new NpgsqlConnection(connectionString);
+                        conn.Open();
+
+                        connections[i] = conn;
+                    });
+
+                    while (!result.IsCompleted) ;
+
+                    foreach (var conn in connections)
+                    {
+                        hashCodes.Add(conn.GetHashCode());
+                        connectionQueue.AddLast(conn);
+                    }
+                }
+                else
+                {
+                    while (connectionCount-- > 0)
+                    {
+                        NpgsqlConnection conn = new NpgsqlConnection(connectionString);
+                        conn.Open();
+
+                        hashCodes.Add(conn.GetHashCode());
+                        connectionQueue.AddLast(conn);
+                    }
                 }
             }
         }
