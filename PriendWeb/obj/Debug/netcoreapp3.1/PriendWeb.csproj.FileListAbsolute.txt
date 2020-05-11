@@ -110,3 +110,5 @@ C:\Users\nda11\source\Git\Priend\Priend_Web\PriendWeb\bin\Debug\netcoreapp3.1\zh
 C:\Users\nda11\source\Git\Priend\Priend_Web\PriendWeb\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\nda11\source\Git\Priend\Priend_Web\PriendWeb\obj\Debug\netcoreapp3.1\PriendWeb.csproj.CoreCompileInputs.cache
 C:\Users\nda11\source\Git\Priend\Priend_Web\PriendWeb\obj\Debug\netcoreapp3.1\PriendWeb.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\nda11\source\Git\Priend\Priend_Web\PriendWeb\obj\Debug\netcoreapp3.1\Razor\Pages\Account\Reset.cshtml.g.cs
+C:\Users\nda11\source\Git\Priend\Priend_Web\PriendWeb\obj\Debug\netcoreapp3.1\Razor\Pages\Account\Verification.cshtml.g.cs
