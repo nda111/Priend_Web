@@ -1,0 +1,51 @@
+﻿@page "{hash}"
+@model PriendWeb.Pages.Account.VerificationModel
+@{
+    ViewData["Title"] = "Priend-Verification";
+}
+
+@using PriendWeb.Interaction;
+@using PriendWeb.Interaction.Membership.Web;
+@using System.Net.WebSockets;
+@using System.Threading;
+
+@{
+    string uri = $"wss://{Request.Host}/ws/membership/web/verify";
+
+    var socket = new ClientWebSocket();
+    await socket.ConnectAsync(new Uri(uri), CancellationToken.None);
+    var conn = new WebSocketConnection(socket);
+
+    await conn.SendTextAsync(Model.Hash);
+
+    await conn.ReceiveAsync();
+    VerificationResponse.EResponse response = (VerificationResponse.EResponse)conn.BinaryMessage[0];
+
+    switch (response)
+    {
+        case VerificationResponse.EResponse.Ok:
+            await conn.ReceiveAsync();
+            string name = conn.TextMessage;
+
+            <h1>Email Verified</h1>
+            <p>
+                Hello @name, <br /> <br />
+                Now you are ready to start Priend.<br />
+                I hope this would help you and your family! <br /> <br />
+                The Priend Team.
+            </p>
+            break;
+
+        case VerificationResponse.EResponse.UnknownHash:
+            <h1>Unknown Page</h1>
+            break;
+
+        case VerificationResponse.EResponse.ServerError:
+        default:
+            <h1>Server Error</h1>
+            break;
+    }
+
+    await conn.CloseAsync();
+}
+

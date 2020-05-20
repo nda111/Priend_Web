@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PriendWeb.Interaction;
 using Npgsql;
+using PriendWeb.Interaction.Membership;
+using PriendWeb.Interaction.Membership.Web;
 
 namespace PriendWeb
 {
@@ -27,11 +29,19 @@ namespace PriendWeb
             {
                 MailApiKey = configuration.GetValue<string>("MailApiKey");
             }
-            NpgConnections = new NpgsqlConnectionManager(configuration.GetValue<string>("ConnectionString"), 5);
+            NpgConnections = new NpgsqlConnectionManager(configuration.GetValue<string>("ConnectionString"), 5, true);
 
             IResponse[] responses =
             {
                 new EchoResponse(),
+
+                new EvaluationResponse(),
+                new LoginResponse(),
+                new RegisterResponse(),
+                new ResetPasswordResponse(),
+                new VerificationResponse(),
+                new ResetPasswordWebResponse(),
+                new ResetPasswordConfirmResponse(),
             };
 
             WebSocketRoutingTable = new Dictionary<string, IResponse>();
