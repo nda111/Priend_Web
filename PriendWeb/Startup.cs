@@ -31,7 +31,7 @@ namespace PriendWeb
             {
                 MailApiKey = configuration.GetValue<string>("MailApiKey");
             }
-            NpgConnections = new NpgsqlConnectionManager(configuration.GetValue<string>("ConnectionString"), 5, true);
+            NpgConnections = new NpgsqlConnectionManager(configuration.GetValue<string>("ConnectionString"), 3, true);
 
             IResponse[] responses =
             {
