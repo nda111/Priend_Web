@@ -106,6 +106,7 @@ namespace PriendWeb
                         {
                             //var sqlConnection = NpgConnections.WaitForConnection();
                             var sqlConnection = new NpgsqlConnection(Configuration.GetValue<string>("ConnectionString"));
+                            sqlConnection.Open();
 
                             await response.Response(context, conn, sqlConnection);
                             await conn.ReceiveAsync();
