@@ -16,7 +16,7 @@ namespace PriendWeb.Authorization
         /// <returns>정상적이면 true, 아니면 false</returns>
         public static bool ValidateToken(NpgsqlCommand cmd, long id, string token)
         {
-            cmd.CommandText = $"SELECT () FROM account WHERE id={id} AND auth_token='{token}';";
+            cmd.CommandText = $"SELECT id FROM account WHERE id={id} AND auth_token='{token}';";
             using (var reader = cmd.ExecuteReader())
             {
                 return reader.HasRows;
@@ -32,7 +32,7 @@ namespace PriendWeb.Authorization
         /// <returns>접근 가능하면 true, 아니면 false</returns>
         public static bool CheckAuthorizationOnGroup(NpgsqlCommand cmd, long id, int groupId)
         {
-            cmd.CommandText = $"SELECT () FROM participates WHERE group_id={groupId} AND account_id={id};";
+            cmd.CommandText = $"SELECT group_id FROM participates WHERE group_id={groupId} AND account_id={id};";
             using (var reader = cmd.ExecuteReader())
             {
                 return reader.HasRows;
@@ -49,7 +49,7 @@ namespace PriendWeb.Authorization
         public static bool CheckAuthorizationOnAnimal(NpgsqlCommand cmd, long id, long animalId)
         {
             cmd.CommandText =
-                $"SELECT () FROM managed, participates " +
+                $"SELECT managed.group_id FROM managed, participates " +
                 $"WHERE managed.group_id=participates.group_id " +
                 $"AND managed.pet_id={animalId} " +
                 $"AND participates.account_id={id};";
