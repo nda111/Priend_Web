@@ -47,9 +47,10 @@ namespace PriendWeb.Interaction.Home
                     cmd.ExecuteNonQuery();
                 }
             }
-            catch (NpgsqlException)
+            catch (NpgsqlException e)
             {
                 await conn.SendByteAsync((byte)EResponse.ServerError);
+                throw e;
             }
         }
     }
