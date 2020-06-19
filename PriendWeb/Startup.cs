@@ -104,12 +104,14 @@ namespace PriendWeb
 
                         while (!conn.WebSocket.CloseStatus.HasValue)
                         {
-                            var sqlConnection = NpgConnections.WaitForConnection();
+                            //var sqlConnection = NpgConnections.WaitForConnection();
+                            var sqlConnection = new NpgsqlConnection(Configuration.GetValue<string>("ConnectionString"));
 
                             await response.Response(context, conn, sqlConnection);
                             await conn.ReceiveAsync();
 
-                            NpgConnections.TryReturnConnection(sqlConnection);
+                            //NpgConnections.TryReturnConnection(sqlConnection);
+                            sqlConnection.Close();
                         }
                     }
                     else
