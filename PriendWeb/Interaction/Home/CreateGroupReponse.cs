@@ -42,7 +42,7 @@ namespace PriendWeb.Interaction.Home
                     }
 
                     int groupId;
-                    cmd.CommandText = $"INSERT INTO (owner_id, name, passwd) animal_group VALUES({userId}, '{groupName}', '{password}') RETURNING id;";
+                    cmd.CommandText = $"INSERT INTO animal_group (owner_id, name, passwd) VALUES({userId}, '{groupName}', '{password}') RETURNING id;";
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
