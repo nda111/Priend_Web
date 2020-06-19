@@ -23,12 +23,12 @@ namespace PriendWeb.Data.Entity
         /// <summary>
         /// Get the ID of animal
         /// </summary>
-        public int Id { get; private set; } = -1;
+        public long Id { get; private set; } = -1;
 
         /// <summary>
         /// Get the species ID animal
         /// </summary>
-        public int Species { get; private set; } = -1;
+        public long Species { get; private set; } = -1;
 
         /// <summary>
         /// Get the birthday of animal
@@ -59,7 +59,7 @@ namespace PriendWeb.Data.Entity
         /// <param name="name">Name of the animal</param>
         /// <param name="sex">Sex of the animal</param>
         /// <param name="weights">Dictionary of weight of the animal</param>
-        public Animal(int id, int species, int birthday, string name, Sex sex, SortedDictionary<long, double> weights)
+        public Animal(long id, long species, long birthday, string name, Sex sex, SortedDictionary<long, double> weights)
         {
             Id = id;
             Species = species;
@@ -96,18 +96,18 @@ namespace PriendWeb.Data.Entity
 
         public bool ReadJson(JObject json)
         {
-            int? id = null;
+            long? id = null;
             string name = null;
             long? birthday = null;
             short? sex = null;
-            int? species = null;
+            long? species = null;
             JArray weightArray = null;
 
             JToken token;
 
             if (json.TryGetValue(JsonKeyId, out token))
             {
-                id = token.ToObject<int>();
+                id = token.ToObject<long>();
             }
             if (json.TryGetValue(JsonKeyName, out token))
             {
@@ -123,7 +123,7 @@ namespace PriendWeb.Data.Entity
             }
             if (json.TryGetValue(JsonKeySpecies, out token))
             {
-                species = token.ToObject<int>();
+                species = token.ToObject<long>();
             }
             if (json.TryGetValue(JsonKeyWeight, out token))
             {
