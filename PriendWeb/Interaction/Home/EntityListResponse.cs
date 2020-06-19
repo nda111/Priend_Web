@@ -40,41 +40,21 @@ namespace PriendWeb.Interaction.Home
                         return;
                     }
 
-                    List<int> groupIdList = new List<int>();
-                    int prevGroupId = -1;
-                    SortedList<int, LinkedList<long>> idEntries = new SortedList<int, LinkedList<long>>();
-                    LinkedList<long> currentPetIdList = null;
-                    cmd.CommandText =
-                        $"SELECT managed.group_id, managed.pet_id FROM " +
-                        $"participates JOIN managed ON participates.group_id=managed.group_id " +
-                        $"WHERE account_id={id} " +
-                        $"ORDER BY managed.group_id;";
+                    LinkedList<int> groupIdList = new LinkedList<int>();
+                    cmd.CommandText = $"SELECT group_id FROM participates WHERE account_id={id};";
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             int groupId = reader.GetInt32(0);
-                            long petId = reader.GetInt64(1);
-
-                            if (prevGroupId != groupId)
-                            {
-                                groupIdList.Add(groupId);
-                                currentPetIdList = new LinkedList<long>();
-                                idEntries.Add(groupId, currentPetIdList);
-
-                                prevGroupId = groupId;
-                            }
-
-                            currentPetIdList.AddLast(petId);
+                            groupIdList.AddLast(groupId);
                         }
                     }
 
                     var groups = new List<Group>();
-                    var entries = new Dictionary<Group, LinkedList<Animal>>();
-                    foreach (int groupId in groupIdList)
+                    var idEntries = new Dictionary<Group, LinkedList<long>>();
+                    foreach (var groupId in groupIdList)
                     {
-                        var animalList = new LinkedList<Animal>();
-
                         Group group;
                         cmd.CommandText = $"SELECT owner_id, name FROM animal_group WHERE id={groupId};";
                         using (var reader = cmd.ExecuteReader())
@@ -86,7 +66,6 @@ namespace PriendWeb.Interaction.Home
 
                                 group = new Group(groupId, owner, name);
                                 groups.Add(group);
-                                entries.Add(group, animalList);
                             }
                             else
                             {
@@ -94,31 +73,30 @@ namespace PriendWeb.Interaction.Home
                             }
                         }
 
-                        foreach (long petId in idEntries[groupId])
+                        var animalIdList = new LinkedList<long>();
+                        cmd.CommandText = $"SELECT pet_id FROM managed WHERE group_id={groupId};";
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            Animal animal;
-                            SortedDictionary<long, double> weights;
-
-                            cmd.CommandText = $"SELECT species, name, birth, sex FROM animal WHERE id={petId};";
-                            using (var reader = cmd.ExecuteReader())
+                            while (reader.Read())
                             {
-                                if (reader.Read())
-                                {
-                                    long species = reader.GetInt64(0);
-                                    string name = reader.GetString(1);
-                                    long birthday = reader.GetInt64(2);
-                                    short sex = reader.GetInt16(3);
-
-                                    weights = new SortedDictionary<long, double>();
-                                    animal = new Animal(petId, species, birthday, name, (Sex)sex, weights);
-                                }
-                                else
-                                {
-                                    continue;
-                                }
+                                long animalId = reader.GetInt64(0);
+                                animalIdList.AddLast(animalId);
                             }
+                        }
 
-                            cmd.CommandText = $"SELECT measured, weights FROM weights WHERE pet_id={petId};";
+                        idEntries.Add(group, animalIdList);
+                    }
+
+                    var entries = new Dictionary<Group, LinkedList<Animal>>();
+                    foreach (var group in groups)
+                    {
+                        var animals = new LinkedList<Animal>();
+                        var idEntry = idEntries[group];
+
+                        foreach (var animalId in idEntry)
+                        {
+                            var weights = new SortedDictionary<long, double>();
+                            cmd.CommandText = $"SELECT measured, weights FROM weights WHERE pet_id={animalId};";
                             using (var reader = cmd.ExecuteReader())
                             {
                                 while (reader.Read())
@@ -129,11 +107,28 @@ namespace PriendWeb.Interaction.Home
                                     weights.Add(when, weight);
                                 }
                             }
+                            
+                            cmd.CommandText = $"SELECT species, name, birth, sex FROM animal WHERE id={animalId};";
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                if (reader.Read())
+                                {
+                                    long species = reader.GetInt64(0);
+                                    string name = reader.GetString(1);
+                                    long birthday = reader.GetInt64(2);
+                                    short sex = reader.GetInt16(3);
 
-                            animalList.AddLast(animal);
+                                    var animal = new Animal(animalId, species, birthday, name, (Sex)sex, weights);
+                                    animals.AddLast(animal);
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            }
                         }
 
-                        entries.Add(group, animalList);
+                        entries.Add(group, animals);
                     }
 
                     await conn.SendByteAsync((byte)EResponse.Ok);
