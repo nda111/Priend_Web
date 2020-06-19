@@ -13,6 +13,7 @@ using PriendWeb.Interaction;
 using Npgsql;
 using PriendWeb.Interaction.Membership;
 using PriendWeb.Interaction.Membership.Web;
+using PriendWeb.Interaction.Data;
 
 namespace PriendWeb
 {
@@ -42,6 +43,8 @@ namespace PriendWeb
                 new VerificationResponse(),
                 new ResetPasswordWebResponse(),
                 new ResetPasswordConfirmResponse(),
+
+                new SpeciesListResponse(),
             };
 
             WebSocketRoutingTable = new Dictionary<string, IResponse>();
