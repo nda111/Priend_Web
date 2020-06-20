@@ -88,7 +88,7 @@ namespace PriendWeb.Interaction.Home
                     }
 
                     long animalId;
-                    cmd.CommandText = $"INSERT INTO animal VALUES({species}, '{name}', {birthday}, {sex}) RETURNING id;";
+                    cmd.CommandText = $"INSERT INTO animal (species, name, birth, sex) VALUES({species}, '{name}', {birthday}, {sex}) RETURNING id;";
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
