@@ -102,7 +102,7 @@ namespace PriendWeb.Interaction.Home
                         }
                     }
 
-                    cmd.CommandText = $"INSERT INTO participates VALUES({groupId}, {animalId});";
+                    cmd.CommandText = $"INSERT INTO managed VALUES({groupId}, {animalId});";
                     cmd.ExecuteNonQuery();
 
                     cmd.CommandText = $"INSERT INTO weights VALUES({animalId}, {today}, {weight});";
