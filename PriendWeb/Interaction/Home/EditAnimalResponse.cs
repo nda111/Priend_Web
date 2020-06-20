@@ -96,7 +96,7 @@ namespace PriendWeb.Interaction.Home
                         }
                     }
 
-                    cmd.CommandText = $"UPDATE animal SET species={species}, name={name}, birth={birthday}, sex={sex} WHERE id={animalId};";
+                    cmd.CommandText = $"UPDATE animal SET species={species}, name='{name}', birth={birthday}, sex={sex} WHERE id={animalId};";
                     if (cmd.ExecuteNonQuery() == 0)
                     {
                         await conn.SendByteAsync((byte)EResponse.ServerError);
