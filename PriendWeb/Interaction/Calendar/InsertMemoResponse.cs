@@ -55,11 +55,11 @@ namespace PriendWeb.Interaction.Calendar
                 // Insert new memo on the database
                 if (memo.PhotoString == null)
                 {
-                    cmd.CommandText = $"INSERT INTO memo (animal_id, date_time, title, content) VALUES({memo.Id}, {memo.When}, '{memo.Title}', '{memo.Content}');";
+                    cmd.CommandText = $"INSERT INTO memo (animal_id, date_time, title, content) VALUES({animalId}, {memo.When}, '{memo.Title}', '{memo.Content}');";
                 }
                 else
                 {
-                    cmd.CommandText = $"INSERT INTO memo (animal_id, date_time, title, content, images) VALUES({memo.Id}, {memo.When}, '{memo.Title}', '{memo.Content}', '{memo.PhotoString}');";
+                    cmd.CommandText = $"INSERT INTO memo (animal_id, date_time, title, content, images) VALUES({animalId}, {memo.When}, '{memo.Title}', '{memo.Content}', '{memo.PhotoString}');";
                 }
 
                 if (cmd.ExecuteNonQuery() == 0)
