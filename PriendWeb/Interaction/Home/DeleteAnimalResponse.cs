@@ -34,11 +34,13 @@ namespace PriendWeb.Interaction.Home
                     if (!AuthorizationChecker.ValidateToken(cmd, id, authToken))
                     {
                         await conn.SendByteAsync((byte)EResponse.AccountError);
+                        return;
                     }
 
                     if (!AuthorizationChecker.CheckAuthorizationOnAnimal(cmd, id, animalId))
                     {
                         await conn.SendByteAsync((byte)EResponse.AccountError);
+                        return;
                     }
 
                     cmd.CommandText = 
@@ -46,6 +48,8 @@ namespace PriendWeb.Interaction.Home
                         $"DELETE FROM managed WHERE pet_id={animalId};" +
                         $"DELETE FROM animal WHERE id={animalId};";
                     cmd.ExecuteNonQuery();
+
+                    await conn.SendByteAsync((byte)EResponse.Ok);
                 }
             }
             catch (NpgsqlException e)
