@@ -18,7 +18,7 @@ namespace PriendWeb.Interaction.Calendar
             Ok = 3,
         }
 
-        string IResponse.Path => throw new NotImplementedException();
+        string IResponse.Path => "/ws/calendar/memos";
 
         async Task IResponse.Response(HttpContext context, WebSocketConnection conn, NpgsqlConnection npgConn)
         {
