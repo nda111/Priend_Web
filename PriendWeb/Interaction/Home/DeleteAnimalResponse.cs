@@ -43,6 +43,7 @@ namespace PriendWeb.Interaction.Home
 
                     cmd.CommandText = 
                         $"DELETE FROM weights WHERE pet_id={animalId};" +
+                        $"DELETE FROM managed WHERE pet_id={animalId};" +
                         $"DELETE FROM animal WHERE id={animalId};";
                     cmd.ExecuteNonQuery();
                 }
