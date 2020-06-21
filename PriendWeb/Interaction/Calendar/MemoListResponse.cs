@@ -31,6 +31,9 @@ namespace PriendWeb.Interaction.Calendar
             await conn.ReceiveAsync();
             long animalId = conn.Int64Message.Value;
 
+            await conn.ReceiveAsync();
+            ulong when = conn.UInt64Message.Value;
+
             using (var cmd = npgConn.CreateCommand())
             {
                 if (!AuthorizationChecker.ValidateToken(cmd, accountId, authToken))
@@ -48,16 +51,15 @@ namespace PriendWeb.Interaction.Calendar
                 // Send list of memo
                 LinkedList<Memo> memoList = new LinkedList<Memo>();
 
-                cmd.CommandText = $"SELECT id, date_time, title, content, images FROM memo WHERE animal_id={animalId};";
+                cmd.CommandText = $"SELECT id, title, content, images FROM memo WHERE animal_id={animalId} AND date_time={when};";
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         long id = reader.GetInt64(0);
-                        ulong when = checked((ulong)reader.GetInt64(1));
-                        string title = reader.GetString(2);
-                        string content = reader.GetString(3);
-                        string photoString = reader.GetString(4);
+                        string title = reader.GetString(1);
+                        string content = reader.GetString(2);
+                        string photoString = reader.GetString(3);
 
                         memoList.AddLast(new Memo(id, when, title, content, photoString));
                     }
