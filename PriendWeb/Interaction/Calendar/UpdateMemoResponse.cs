@@ -59,19 +59,21 @@ namespace PriendWeb.Interaction.Calendar
                     // Update memo on the database
                     var cmdBuilder = new StringBuilder("UPDATE memo SET ");
 
+                    var changeQueryList = new List<string>();
                     if (commit.Title != null)
                     {
-                        cmdBuilder.Append($"title='{commit.Title}' ");
+                        changeQueryList.Add($"title='{commit.Title}'");
                     }
                     if (commit.Content != null)
                     {
-                        cmdBuilder.Append($"content='{commit.Content}' ");
+                        changeQueryList.Add($"content='{commit.Content}'");
                     }
                     if (commit.PhotoString != null)
                     {
-                        cmdBuilder.Append($"images='{commit.PhotoString}' ");
+                        changeQueryList.Add($"images='{commit.PhotoString}'");
                     }
-                    cmdBuilder.Append($"WHERE id={commit.Id};");
+                    cmdBuilder.Append(string.Join(", ", changeQueryList));
+                    cmdBuilder.Append($" WHERE id={commit.Id};");
 
                     cmd.CommandText = cmdBuilder.ToString();
                     if (cmd.ExecuteNonQuery() == 0)
