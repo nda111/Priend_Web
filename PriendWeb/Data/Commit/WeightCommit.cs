@@ -41,12 +41,9 @@ namespace PriendWeb.Data.Commit
                 JToken dateToken;
                 JToken weightToken;
 
-                if (!json.TryGetValue(JsonKeyType, out typeToken) ||
-                    !json.TryGetValue(JsonKeyDate, out dateToken) ||
-                    !json.TryGetValue(JsonKeyWeight, out weightToken))
-                {
-                    return false;
-                }
+                json.TryGetValue(JsonKeyType, out typeToken);
+                json.TryGetValue(JsonKeyDate, out dateToken);
+                bool hasWeight = json.TryGetValue(JsonKeyWeight, out weightToken);
 
                 switch (typeToken.ToObject<string>())
                 {
@@ -63,8 +60,14 @@ namespace PriendWeb.Data.Commit
                 }
 
                 Date = dateToken.ToObject<ulong>();
-                Weight = weightToken.ToObject<double>();
-
+                if (hasWeight)
+                {
+                    Weight = weightToken.ToObject<double>();
+                }
+                else
+                {
+                    Weight = -1;
+                }
                 return true;
             }
 
