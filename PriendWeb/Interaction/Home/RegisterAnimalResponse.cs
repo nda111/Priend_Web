@@ -37,7 +37,7 @@ namespace PriendWeb.Interaction.Home
             string name = conn.TextMessage;
 
             await conn.ReceiveAsync();
-            long birthday = conn.Int64Message.Value;
+            ulong birthday = conn.UInt64Message.Value;
 
             await conn.ReceiveAsync();
             short sex = conn.Int16Message.Value;
@@ -49,7 +49,7 @@ namespace PriendWeb.Interaction.Home
             double weight = double.Parse(conn.TextMessage);
 
             await conn.ReceiveAsync();
-            long today = conn.Int64Message.Value;
+            ulong today = conn.UInt64Message.Value;
 
             try
             {

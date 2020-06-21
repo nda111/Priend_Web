@@ -37,7 +37,7 @@ namespace PriendWeb.Interaction.Home
             string name = conn.TextMessage;
 
             await conn.ReceiveAsync();
-            long birthday = conn.Int64Message.Value;
+            ulong birthday = conn.UInt64Message.Value;
 
             await conn.ReceiveAsync();
             short sex = conn.Int16Message.Value;
