@@ -62,17 +62,10 @@ namespace PriendWeb.Data.Commit
                         return false;
                 }
 
-                if (dateToken.Type == JTokenType.Integer && weightToken.Type == JTokenType.Float)
-                {
-                    Date = dateToken.ToObject<ulong>();
-                    Weight = weightToken.ToObject<double>();
+                Date = dateToken.ToObject<ulong>();
+                Weight = weightToken.ToObject<double>();
 
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
 
             public JObject ToJson()
@@ -118,7 +111,7 @@ namespace PriendWeb.Data.Commit
             JToken idToken;
             JToken arrayToken;
 
-            if (json.TryGetValue(JsonKeyId, out idToken) && 
+            if (json.TryGetValue(JsonKeyId, out idToken) &&
                 json.TryGetValue(JsonKeyChanges, out arrayToken))
             {
                 long id = idToken.ToObject<long>();
