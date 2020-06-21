@@ -33,7 +33,7 @@ namespace PriendWeb.Data.Entity
         /// <summary>
         /// Get the birthday of animal
         /// </summary>
-        public long Birthday { get; private set; } = -1;
+        public ulong Birthday { get; private set; } = 0;
 
         /// <summary>
         /// Get the name of aniaml
@@ -48,7 +48,7 @@ namespace PriendWeb.Data.Entity
         /// <summary>
         /// Get the list of weight of animal
         /// </summary>
-        public SortedDictionary<long, double> Weights { get; private set; } = null;
+        public SortedDictionary<ulong, double> Weights { get; private set; } = null;
 
         /// <summary>
         /// Create instance with data
@@ -59,7 +59,7 @@ namespace PriendWeb.Data.Entity
         /// <param name="name">Name of the animal</param>
         /// <param name="sex">Sex of the animal</param>
         /// <param name="weights">Dictionary of weight of the animal</param>
-        public Animal(long id, long species, long birthday, string name, Sex sex, SortedDictionary<long, double> weights)
+        public Animal(long id, long species, ulong birthday, string name, Sex sex, SortedDictionary<ulong, double> weights)
         {
             Id = id;
             Species = species;
@@ -98,7 +98,7 @@ namespace PriendWeb.Data.Entity
         {
             long? id = null;
             string name = null;
-            long? birthday = null;
+            ulong? birthday = null;
             short? sex = null;
             long? species = null;
             JArray weightArray = null;
@@ -115,7 +115,7 @@ namespace PriendWeb.Data.Entity
             }
             if (json.TryGetValue(JsonKeyBirthday, out token))
             {
-                birthday = token.ToObject<long>();
+                birthday = token.ToObject<ulong>();
             }
             if (json.TryGetValue(JsonKeySex, out token))
             {
@@ -132,14 +132,14 @@ namespace PriendWeb.Data.Entity
 
             if (new object[] { id, name, birthday, sex, species, weightArray }.All(o => o != null))
             {
-                SortedDictionary<long, double> weights = new SortedDictionary<long, double>();
+                SortedDictionary<ulong, double> weights = new SortedDictionary<ulong, double>();
                 foreach (var pairToken in weightArray)
                 {
                     JObject pair = pairToken.ToObject<JObject>();
 
                     if (pair.TryGetValue(JsonKeyWeightDate, out var dateToken) && pair.TryGetValue(JsonKeyWeightValue, out var valueToken))
                     {
-                        weights.Add(dateToken.ToObject<long>(), valueToken.ToObject<double>());
+                        weights.Add(dateToken.ToObject<ulong>(), valueToken.ToObject<double>());
                     }
                     else
                     {

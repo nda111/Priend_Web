@@ -15,6 +15,7 @@ using PriendWeb.Interaction.Membership;
 using PriendWeb.Interaction.Membership.Web;
 using PriendWeb.Interaction.Data;
 using PriendWeb.Interaction.Calendar;
+using PriendWeb.Interaction.Home;
 
 namespace PriendWeb
 {
@@ -31,7 +32,7 @@ namespace PriendWeb
             {
                 MailApiKey = configuration.GetValue<string>("MailApiKey");
             }
-            NpgConnections = new NpgsqlConnectionManager(configuration.GetValue<string>("ConnectionString"), 5, true);
+            NpgConnections = new NpgsqlConnectionManager(configuration.GetValue<string>("ConnectionString"), 3, true);
 
             IResponse[] responses =
             {
@@ -46,6 +47,13 @@ namespace PriendWeb
                 new ResetPasswordConfirmResponse(),
 
                 new SpeciesListResponse(),
+
+                new EntityListResponse(),
+                new CreateGroupReponse(),
+                new JoinGroupResponse(),
+                new RegisterAnimalResponse(),
+                new EditAnimalResponse(),
+                new DeleteAnimalResponse(),
                 
                 new CommitWeightResponse(),
                 new InsertMemoResponse(),

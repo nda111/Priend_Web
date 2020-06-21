@@ -27,7 +27,7 @@ namespace PriendWeb.Interaction.Data
                 JArray speciesArray = new JArray();
                 using (var cmd = npgConn.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT id, en_us, ko_kr FROM animal_species;";
+                    cmd.CommandText = "SELECT species_id, en_us, ko_kr FROM animal_species;";
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
