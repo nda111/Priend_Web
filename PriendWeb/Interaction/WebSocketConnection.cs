@@ -115,6 +115,18 @@ namespace PriendWeb.Interaction
             }
         }
 
+        public ulong? UInt64Message
+        {
+            get
+            {
+                if (BinaryMessage != null && BinaryMessage.Length == 8)
+                {
+                    return ((ulong)BinaryMessage[0] << 56) | ((ulong)BinaryMessage[1] << 48) | ((ulong)BinaryMessage[2] << 40) | ((ulong)BinaryMessage[3] << 32) | ((ulong)BinaryMessage[4] << 24) | ((ulong)BinaryMessage[5] << 16) | ((ulong)BinaryMessage[6] << 8) | (ulong)BinaryMessage[7];
+                }
+                return null;
+            }
+        }
+
         /// <summary>
         /// 텍스트 메시지를 전송한다.
         /// </summary>
