@@ -59,7 +59,15 @@ namespace PriendWeb.Interaction.Calendar
                         long id = reader.GetInt64(0);
                         string title = reader.GetString(1);
                         string content = reader.GetString(2);
-                        string photoString = reader.GetString(3);
+                        string photoString;
+                        if (reader.IsDBNull(3))
+                        {
+                            photoString = null;
+                        }
+                        else
+                        {
+                            photoString = reader.GetString(3);
+                        }
 
                         memoList.AddLast(new Memo(id, when, title, content, photoString));
                     }
