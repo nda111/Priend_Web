@@ -31,7 +31,7 @@ namespace PriendWeb.Data.Commit
 
             public Type ChangeType { get; private set; }
 
-            public long Date { get; private set; }
+            public ulong Date { get; private set; }
 
             public double Weight { get; private set; }
 
@@ -64,7 +64,7 @@ namespace PriendWeb.Data.Commit
 
                 if (dateToken.Type == JTokenType.Integer && weightToken.Type == JTokenType.Float)
                 {
-                    Date = dateToken.ToObject<long>();
+                    Date = dateToken.ToObject<ulong>();
                     Weight = weightToken.ToObject<double>();
 
                     return true;
@@ -111,7 +111,7 @@ namespace PriendWeb.Data.Commit
         /// <summary>
         /// 몸무게 업데이트에 대한 리스트
         /// </summary>
-        public SortedList<long, Change> Changes { get; } = new SortedList<long, Change>();
+        public SortedList<ulong, Change> Changes { get; } = new SortedList<ulong, Change>();
 
         public bool ReadJson(JObject json)
         {

@@ -16,7 +16,8 @@ namespace PriendWeb.Interaction.Calendar
         private enum EResponse : byte
         {
             Ok = 0,
-            ServerError = 1,
+            AccountError = 1,
+            ServerError = 2,
         }
 
         string IResponse.Path => "/ws/calendar/weight/commit";
@@ -43,18 +44,17 @@ namespace PriendWeb.Interaction.Calendar
             {
                 if (!AuthorizationChecker.ValidateToken(cmd, id, authToken))
                 {
-                    await conn.SendByteAsync((byte)EResponse.ServerError);
+                    await conn.SendByteAsync((byte)EResponse.AccountError);
                     return;
                 }
 
                 if (!AuthorizationChecker.CheckAuthorizationOnAnimal(cmd, id, commit.AnimalId))
                 {
-                    await conn.SendByteAsync((byte)EResponse.ServerError);
+                    await conn.SendByteAsync((byte)EResponse.AccountError);
                     return;
                 }
 
                 // Actual update work
-                int successCount = 0;
                 foreach (var pair in commit.Changes)
                 {
                     var change = pair.Value;
@@ -96,15 +96,12 @@ namespace PriendWeb.Interaction.Calendar
 
                             affectionCount = cmd.ExecuteNonQuery();
                         } while (affectionCount == 0);
-
-                        successCount++;
                     }
 
                 UPDATE_FAILURE: { }
                 }
 
                 await conn.SendByteAsync((byte)EResponse.Ok);
-                await conn.SendInt32Async(successCount);
             }
         }
     }
