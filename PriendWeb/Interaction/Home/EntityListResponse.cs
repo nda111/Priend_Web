@@ -95,13 +95,13 @@ namespace PriendWeb.Interaction.Home
 
                         foreach (var animalId in idEntry)
                         {
-                            var weights = new SortedDictionary<long, double>();
+                            var weights = new SortedDictionary<ulong, double>();
                             cmd.CommandText = $"SELECT measured, weights FROM weights WHERE pet_id={animalId};";
                             using (var reader = cmd.ExecuteReader())
                             {
                                 while (reader.Read())
                                 {
-                                    long when = reader.GetInt64(0);
+                                    ulong when = checked((ulong)reader.GetInt64(0));
                                     double weight = reader.GetDouble(1);
 
                                     weights.Add(when, weight);
@@ -115,7 +115,7 @@ namespace PriendWeb.Interaction.Home
                                 {
                                     long species = reader.GetInt64(0);
                                     string name = reader.GetString(1);
-                                    long birthday = reader.GetInt64(2);
+                                    ulong birthday = checked((ulong)reader.GetInt64(2));
                                     short sex = reader.GetInt16(3);
 
                                     var animal = new Animal(animalId, species, birthday, name, (Sex)sex, weights);
