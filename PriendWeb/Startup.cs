@@ -16,6 +16,7 @@ using PriendWeb.Interaction.Membership.Web;
 using PriendWeb.Interaction.Data;
 using PriendWeb.Interaction.Calendar;
 using PriendWeb.Interaction.Home;
+using PriendWeb.Interaction.Settings;
 
 namespace PriendWeb
 {
@@ -54,12 +55,15 @@ namespace PriendWeb
                 new RegisterAnimalResponse(),
                 new EditAnimalResponse(),
                 new DeleteAnimalResponse(),
-                
+
                 new CommitWeightResponse(),
                 new InsertMemoResponse(),
                 new UpdateMemoResponse(),
                 new DeleteMemoResponse(),
                 new MemoListResponse(),
+
+                new DeleteAccountResponse(),
+                new ChangeNameResponse(),
             };
 
             WebSocketRoutingTable = new Dictionary<string, IResponse>();
