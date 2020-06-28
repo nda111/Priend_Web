@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace PriendWeb.Interaction.Membership
 {
+    using Settings = PriendWeb.Data.Settings;
+
     public sealed class LoginResponse : IResponse
     {
         private enum EResponse : byte
