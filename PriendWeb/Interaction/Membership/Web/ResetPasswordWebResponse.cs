@@ -55,7 +55,7 @@ namespace PriendWeb.Interaction.Membership.Web
                     {
                         await conn.SendByteAsync((byte)EResponse.Used);
                     }
-                    else if (DateTime.Now.Ticks <= expireDue)
+                    else if (DateTime.Now.Ticks >= expireDue)
                     {
                         await conn.SendByteAsync((byte)EResponse.Expired);
                     }
